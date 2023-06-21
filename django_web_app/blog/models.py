@@ -5,9 +5,9 @@ from django.urls import reverse
 import os
 
 class Post(models.Model):
-	title = models.CharField(max_length=100)
+	title = models.CharField(max_length=100, unique=True)
 	file = models.FileField(null=True,blank=True,upload_to='Files')
-	content = models.TextField()
+	content = models.TextField(unique=True)
 	date_posted = models.DateTimeField(default=timezone.now)
 	author = models.ForeignKey(User, on_delete=models.CASCADE)
 
