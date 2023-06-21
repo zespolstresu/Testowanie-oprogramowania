@@ -1,0 +1,28 @@
+# Django project files
+*.log
+*.pot
+*.pyc
+__pycache__/
+db.sqlite3
+media/
+staticfiles/
+
+# Virtual environment
+venv/
+
+# Development and local settings
+.env
+.env.local
+.env.dev
+.env.prod
+.env.example
+
+# IDE and editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+*.pydevproject
+*.pyc
+*.bak
+*~
