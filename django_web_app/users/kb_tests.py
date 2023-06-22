@@ -15,7 +15,8 @@ def test_profile_create():
 
 @pytest.mark.django_db
 def test_profile_is_unique():
-    with pytest.raises(IntegrityError):
-        User.objects.create_user(username='wiki_grym', email='wiki@gmail.com',password='password1')
-        User.objects.create_user(username='ala_grom', email='ala@gmail.com',password='password2')
+    User.objects.create(username='wiki_grym', email='wiki@gmail.com', password='password1')
+    with pytest.raises(IntegrityError) as exc_info:
+        User.objects.create(username='wiki_grym', email='ala@gmail.com', password='password2')
+    assert 'UNIQUE constraint failed' in str(exc_info.value)
 
