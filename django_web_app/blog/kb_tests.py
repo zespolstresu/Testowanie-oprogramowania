@@ -15,26 +15,33 @@ from users.models import Profile
 #         Post.objects.create(title='Nowe badania potwierdzają skuteczność szczepionki', content='Naukowcy dowodzą, że szczepionka przeciwko COVID-19 jest bezpieczna i skuteczna.', author=author),
 #     ]
 
+@pytest.fixture
+def username():
+    return 'krisbuj'
+
 @pytest.mark.django_db
-def test_user_posts_page(client, posts):
-    url = reverse("user-posts")
+def test_user_posts_page(client, username):
+    url = reverse("user-posts", kwargs={'username': username})
     response = client.get(url)
     soup = BeautifulSoup(response.content, "html.parser")
     for author in soup.find_all("div.article-metadata > a"):
-        assert author.string == 'krisbuj', f"krisbuj is not the author of this post!"
+        assert author.string == username, f"{username} is not the author of this post!"
         
-        
+@pytest.mark.django_db       
 def test_main_page_title(client):
     url = reverse("blog-home")
+    print(url)
     response = client.get(url)
     soup = BeautifulSoup(response.content, "html.parser")
     assert soup.find("nav").find("a").text.lower().strip() == "django webapp", "Incorrect page title!"
-        
+
+@pytest.mark.django_db
 def test_response_status(client):
-    url = reverse("i-dont-exist")
+    url = 'http://localhost:8000/cos'
     response = client.get(url)
     assert response.status_code == 404, "This page is not supposed to exist!"
     
+@pytest.mark.django_db
 def test_image_download(client):
     url = reverse("blog-home")
     response = client.get(url)
